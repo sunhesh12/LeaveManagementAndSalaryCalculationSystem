@@ -14,11 +14,11 @@
         <i class="fa fa-caret-right"></i>
     </li>
     <div class="dropdown-container">
-        <li><a href="#">Apply Leave</a></li>
-        <li><a href="#">Leave Balance</a></li>
-        <li><a href="#">Leave Store</a></li>
+        <li><a href="/Interfaces/DirectorInterface/ApplyLeave.php">Apply Leave</a></li>
+        <li><a href="/Interfaces/DirectorInterface/DirectorLeaveBlance.php">Leave Balance</a></li>
+        <li><a href="/Interfaces/DirectorInterface/ApproveStatus.php">Approve status</a></li>
     </div>
-    <li><a href="#">Approve Leave</a></li>
+    <li><a href="/Interfaces/DirectorInterface/ApproveLeave.php">Approve Leave</a></li>
     <li class="dropdown-btn">
         <a href="#">Report</a>
         <i class="fa fa-caret-right"></i>

@@ -51,7 +51,7 @@ p{
     margin-left: 40px;
 }
 input , select{
-    width: 70%;
+    width: 60%;
     height: 50px;
     border-radius: 20px;
     outline: none;
