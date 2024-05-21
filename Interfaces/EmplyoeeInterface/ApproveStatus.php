@@ -24,25 +24,32 @@
             <br>
             <table  id="table">
                 <tr style=" background-color: rgb(105, 111, 255); ">
+                    <th>Leave Name</th>
+                    <th>Period</th>
                     <th>Date</th>
-                    <th>Day</th>
-                    <th>In</th>
-                    <th>Out</th>
+                    <th>Time</th>
+                    <th>Comment</th>
                     <th>Status</th>
+                    <th>Cancel</th>
                 </tr>
                 <?php
                     for($i=0;$i<30;$i++){
-                        $ID = '13/03/2024';
-                        $uname = 'wednesday';
-                        $inTime = '8.30 a.m.';
-                        $outTime = '6.30 p.m.';
-                        $status = 'Full Day';
+                        $ID = 'Annual Leave';
+                        $uname = 'Half Day';
+                        $inTime = '03/04/2024';
+                        $outTime = '11:26';
+                        $Comment = 'I am Feeling unwell';
+                        $status = '';
+                        // echo '<button>cancel</button>';
+
                         echo '<tr>';
                             echo '<td>'.$ID.'</td>';
                             echo '<td>'.$uname.'</td>';
                             echo '<td>'.$inTime.'</td>';
                             echo '<td>'.$outTime.'</td>';
+                            echo '<td>'.$Comment.'</td>';
                             echo '<td>'.$status.'</td>';
+                            echo '<td><button style="width:80%;">cancel</button></td>';
                         echo '</tr>';
                     }
                 ?>
@@ -62,7 +69,9 @@
                     1:{cellWidth:70},
                     2:{cellWidth:30},
                     3:{cellWidth:30},
-                    4:{cellWidth:30}
+                    4:{cellWidth:30},
+                    5:{cellWidth:10},
+                    6:{cellWidth:30}
                 },
                 bodyStyles: {lineColor: [1, 1, 1]},
                 styles:{minCellHeight:5}

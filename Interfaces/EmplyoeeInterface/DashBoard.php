@@ -13,20 +13,20 @@
         <i class="fa fa-caret-right"></i>
     </li>
     <div class="dropdown-container">
-        <li><a href="#">My Attendance</a></li>
-        <li><a href="/Interfaces/EmplyoeeInterface/EmplyoeeAttendence.php">Emplyoees Attendance</a></li>
+        <li><a href="/Interfaces/EmplyoeeInterface/EmplyoeeAttendence.php">My Attendance Report</a></li>
+        <li><a href="#">Calander</a></li>
     </div>
     <!-- <li><a href="#">Attendance</a></li> -->
-    <!-- <li class="dropdown-btn">
+    <li class="dropdown-btn">
         <a href="#">Leave</a>
         <i class="fa fa-caret-right"></i>
     </li>
     <div class="dropdown-container">
-        <li><a href="#">Apply Leave</a></li>
-        <li><a href="#">Leave Balance</a></li>
-        <li><a href="#">Leave Store</a></li>
+        <li><a href="/Interfaces/EmplyoeeInterface/EmplyoLeaveApply.php">Apply Leave</a></li>
+        <li><a href="/Interfaces/EmplyoeeInterface/EmplyoeeLeaveBlance.php">Leave Balance</a></li>
+        <li><a href="/Interfaces/EmplyoeeInterface/ApproveStatus.php">Approve Status</a></li>
     </div>
-    <li><a href="#">Approve Leave</a></li>
+   <!--  <li><a href="#">Approve Leave</a></li>
     <li class="dropdown-btn">
         <a href="#">Report</a>
         <i class="fa fa-caret-right"></i>
@@ -35,7 +35,7 @@
         <li><a href="#">Attendance Report</a></li>
         <li><a href="#">Leave Report</a></li>
         <li><a href="#">Salary Report</a></li>
-    </div>
+    </div>-->
     <li><a href="#">Salary</a></li>
-    <li><a href="#">Profile</a></li> -->
+    <li><a href="#">Profile</a></li> 
 </div>

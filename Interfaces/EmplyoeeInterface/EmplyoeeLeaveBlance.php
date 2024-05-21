@@ -24,19 +24,19 @@
             <br>
             <table  id="table">
                 <tr style=" background-color: rgb(105, 111, 255); ">
-                    <th>Date</th>
-                    <th>Day</th>
-                    <th>In</th>
-                    <th>Out</th>
-                    <th>Status</th>
+                    <th>Leave Type</th>
+                    <th>All Leave</th>
+                    <th>Applied Leave</th>
+                    <th>Reject Leave</th>
+                    <th>Avilable Leave</th>
                 </tr>
                 <?php
                     for($i=0;$i<30;$i++){
-                        $ID = '13/03/2024';
-                        $uname = 'wednesday';
-                        $inTime = '8.30 a.m.';
-                        $outTime = '6.30 p.m.';
-                        $status = 'Full Day';
+                        $ID = 'Annual Leave';
+                        $uname = '14';
+                        $inTime = '2';
+                        $outTime = '0';
+                        $status = '12';
                         echo '<tr>';
                             echo '<td>'.$ID.'</td>';
                             echo '<td>'.$uname.'</td>';

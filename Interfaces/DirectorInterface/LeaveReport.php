@@ -19,30 +19,61 @@
         <?php include 'DashBoard.php' ?>
     </div>
     <div class="div-Main-container">
+    <div class="Div-subContainer" style=" display: flex; text-align: center; ">
+        <div style=" width:33%; height:100px; float:left;">
+        <select required>
+            <option value="volvo">-Year-</option>
+        </select >
+        </div> 
+        <div style=" width:33%; height:100px;  float:left; margin-left:10px;">
+        <select required >
+            <option value="volvo">-Month-</option>
+
+        </select>
+        </div>
+        <div style=" width:33%; height:100px; float:left; margin-left:10px;">
+        <select required>
+            <option value="volvo">-Department-</option>
+
+        </select>
+        </div>
+        <button >Veiw Report</button>
+    
+    </div>
         <div class="Div-subContainer" style=" display: block; text-align: center; ">
             <h1>My Attendence Report</h1>
             <br>
             <table  id="table">
                 <tr style=" background-color: rgb(105, 111, 255); ">
-                    <th>Date</th>
-                    <th>Day</th>
-                    <th>In</th>
-                    <th>Out</th>
-                    <th>Status</th>
+                    <th>Emplyoee ID</th>
+                    <th>Name</th>
+                    <th>Total Days</th>
+                    <th>Absent Days</th>
+                    <th>Presnt Days</th>
+                    <!-- <th>Action</th> -->
+                    
                 </tr>
                 <?php
                     for($i=0;$i<30;$i++){
-                        $ID = '13/03/2024';
-                        $uname = 'wednesday';
-                        $inTime = '8.30 a.m.';
-                        $outTime = '6.30 p.m.';
-                        $status = 'Full Day';
+                        $ID = 'E001';
+                        $uname = 'kavi boo';
+                        $TotalDay = '4';
+                        $AbsentDay = '2';
+                        $PresentDay = '2';
+                        // $action = '';
+                        // echo '<button>cancel</button>';
+
                         echo '<tr>';
                             echo '<td>'.$ID.'</td>';
                             echo '<td>'.$uname.'</td>';
-                            echo '<td>'.$inTime.'</td>';
-                            echo '<td>'.$outTime.'</td>';
-                            echo '<td>'.$status.'</td>';
+                            echo '<td>'.$TotalDay.'</td>';
+                            echo '<td>'.$AbsentDay.'</td>';
+                            echo '<td>'.$PresentDay.'</td>';
+                            // echo '<td>'.$action.'</td>';
+                            // echo '<td>
+                            // <a href="/Interfaces/DirectorInterface/ApproveleaveMoreDetils.php"><button style="width:28%;">More Detils</button></a>
+                            // <button style="width:28%;">Approve</button>
+                            // <button style="width:22%; float:left">Reject</button></td>';
                         echo '</tr>';
                     }
                 ?>
@@ -59,10 +90,10 @@
                 theme:'grid',
                 columnStyles:{
                     0:{cellWidth:20},
-                    1:{cellWidth:70},
+                    1:{cellWidth:20},
                     2:{cellWidth:30},
-                    3:{cellWidth:30},
-                    4:{cellWidth:30}
+                    3:{cellWidth:10},
+                    4:{cellWidth:50}
                 },
                 bodyStyles: {lineColor: [1, 1, 1]},
                 styles:{minCellHeight:5}
