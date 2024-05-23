@@ -11,8 +11,8 @@ body {
 .div-background{
     background-color: rgba(255, 255, 255, 0.418);
     border-radius: 5%;
-    width: 50%;
-    height: 80%;
+    width: 650px;
+    height: auto;
     position:relative;
     margin-left: 25%;
     margin-top: 5%;
@@ -28,8 +28,10 @@ body {
 }
 
 input{
+    
     margin: 10px;
-    width: 60%;
+    margin-left:0px;
+    width: 90%;
     height: 40px;
     border-radius: 10px;
     padding: 5px;
@@ -67,8 +69,8 @@ input{
     background-color: rgba(240, 248, 255, 0.675);
 }
 .div-lab{
-    margin-left: 20%;
-    width: 60%; 
+    margin-left: 14%;
+    width: 73%; 
     /* background-color: red;  */
     height: 10px;
 }
