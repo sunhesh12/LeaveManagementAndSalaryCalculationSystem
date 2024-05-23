@@ -19,24 +19,6 @@
     </div>
     <div class="small-boxes">
         <div class="div-icon">
-            <img src="\DashBoardBoxes\images\AbsentToday.png" alt="icon">
-        </div>
-        <div class="div-text">
-            <h1>Absent Today</h1>
-            <h1 class="h1-number">55</h1>
-        </div>
-    </div>
-    <div class="small-boxes">
-        <div class="div-icon">
-            <img src="\DashBoardBoxes\images\Cancelled.png" alt="icon">
-        </div>
-        <div class="div-text">
-            <h1>Cancelled</h1>
-            <h1 class="h1-number">55</h1>
-        </div>
-    </div>
-    <div class="small-boxes">
-        <div class="div-icon">
             <img src="\DashBoardBoxes\images\Cancelled.png" alt="icon" >
         </div>
         <div class="div-text">
@@ -44,4 +26,24 @@
             <h1 class="h1-number">55</h1>
         </div>
     </div>
+    <div class="small-boxes">
+        <div class="div-icon">
+            <img src="\DashBoardBoxes\images\AbsentToday.png" alt="icon">
+        </div>
+        <div class="div-text">
+            <h1>Absent Today</h1>
+            <h1 class="h1-number">55</h1>
+        </div>
+    </div>
+
+    <!-- <div class="small-boxes">
+        <div class="div-icon">
+            <img src="\DashBoardBoxes\images\Cancelled.png" alt="icon">
+        </div>
+        <div class="div-text">
+            <h1>Cancelled</h1>
+            <h1 class="h1-number">55</h1>
+        </div>
+    </div> -->
+
 </div>
