@@ -50,7 +50,7 @@
 
                 </div>
                 <a href="Interfaces/DirectorInterface/DirectorDashBoard.php">
-                    <button class="btn-log-in" onclick="myFunction()">Log in</button>
+                    <button class="btn-log-in" onclick="myFunction()" >Log in</button>
                 </a>
             </form>
         </div>

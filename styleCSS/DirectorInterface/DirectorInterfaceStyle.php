@@ -141,25 +141,37 @@ body{
     float: left; 
     background-color: rgb(207, 218, 255); 
     width: 40%; 
-    height: 20%; 
+    height: 120px; 
     margin: 2.5%;
     margin-left:6%;
     margin-top:4%
   }
 
-.Main-Dashboard{
+  .Main-Dashboard {
   float: left; 
-  border-radius:40px;
-  background-color: rgba(255, 255, 255, 0); 
+  border-radius: 40px;
   width: 70%; 
-  height: 80%; 
-  margin-left:5%;
+  height: 500px; /* Set a fixed height */
+  margin-left: 5%;
   margin-top: 2%; 
   margin-bottom: 1%;
-  background-color: rgba(252, 186, 3,0.2);
-  border :none
-  /* position: relative; */
+  background-color: rgba(252, 186, 3, 0.2);
+  border: none;
+  overflow-y: scroll; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Hide horizontal scrolling */
 }
+::-webkit-scrollbar {
+    width: 1px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: white; /* Color of the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+    background: white; /* Color of the scrollbar thumb */
+    height: 10px; /* Height of the scrollbar thumb */
+} 
 
 .div-icon{
   width: 25%; 
@@ -208,7 +220,7 @@ body{
   margin-top: -2%; 
 }
 
-.Main-Dashboard{
+<!-- .Main-Dashboard{
     border-radius:40px;
     float: left; 
     width: 90%; 
@@ -228,7 +240,7 @@ body{
 ::-webkit-scrollbar-thumb {
     background: white; /* Color of the scrollbar thumb */
     height: 10px; /* Height of the scrollbar thumb */
-}
+} -->
 
 
   .small-boxes{

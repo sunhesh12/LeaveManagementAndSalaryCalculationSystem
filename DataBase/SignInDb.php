@@ -18,6 +18,13 @@ $conn1->close();
 
 // Verify password using password_verify
 if ($Password === $storedPassword) {
+    // $username = $_SESSION['username'];
+    
+    // Set a cookie with the username that expires in 30 days
+    setcookie('username', $UName, time() + (30 * 24 * 60 * 60), "/"); // 30 days
+
+    // Unset all session variables
+    // $_SESSION = array();
     // If password is correct
     $_SESSION['logged_in'] = true;
     $_SESSION['role'] = $role; // Store the role in the session
