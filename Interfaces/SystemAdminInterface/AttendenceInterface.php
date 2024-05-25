@@ -1,7 +1,11 @@
+<?php
+    // session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <?php include(__DIR__ . '/../../TitleOfWebPage/title.php'); ?>
+    <Link rel="stylesheet" type="text/css" href="/styleCSS/systemAdminInterface/SearchUserStyle.php">
     <link rel="stylesheet" type="text/css" href="/styleCSS/DirectorInterface/DirectorInterfaceStyle.php">
     <link rel="stylesheet" type="text/css" href="/styleCSS/systemAdminInterface/AddUserStyle.php">
     <link rel="stylesheet" type="text/css" href="/styleCSS/systemAdminInterface/AttendenceStyle.php">
@@ -19,30 +23,102 @@
         <?php include 'DashBoard.php' ?>
     </div>
     <div class="div-Main-container">
+        <form method="POST" action="">
+    <div class="Div-subContainer" style=" display: flex; text-align: center; ">
+        <div style=" width:33%; height:100px; float:left;">
+        <select selected>
+            <option value="">-Year-</option>
+            <?php
+                $curYear = date('Y'); 
+
+                for($i=$curYear;$i<=$curYear +10;$i++){
+                    echo '<option value ="'.$i.'">'.$i.'</option>';
+                }
+            ?>
+
+        </select >
+        </div> 
+        <div style=" width:33%; height:100px;  float:left; margin-left:10px;">
+        <select name="Month"  >
+            <option value="" selected>-Month-</option>
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <option value="May">May</option>
+            <option value="June">June</option>
+            <option value="July">July</option>
+            <option value="August">August</option>
+            <option value="September">September</option>
+            <option value="October">October</option>
+            <option value="November">November</option>
+            <option value="December">December</option>
+
+
+        </select>
+        </div>
+        <div style=" width:33%; height:100px; float:left; margin-left:10px;">
+        <select >
+            <option value="volvo">-Department-</option>
+            <?php 
+                // echo '<option value="-Select a department-">-Select a department-</option>';
+                
+                include '../../DataBase/contodb.php';
+                
+
+                $sql = "SELECT Department_name FROM department WHERE Department_id LIKE 'DEP%'";
+                $result = $conn1->query($sql);
+
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo '<option value="department">'. $row['Department_name'] .'</option>'; 
+                    }
+                } else {
+                    echo '<option value="">No departments found</option>';
+                }
+
+                $conn1->close();
+            ?>
+        </select>
+        </div>
+        <button >Veiw Report</button>
+    
+    </div>
+    </form>
         <div class="Div-subContainer" style=" display: block; text-align: center; ">
-            <h1>Attendence Report</h1>
+            <h1>My Attendence Report</h1>
             <br>
             <table  id="table">
                 <tr style=" background-color: rgb(105, 111, 255); ">
-                    <th>User ID</th>
-                    <th>User Name</th>
-                    <th>In</th>
-                    <th>Out</th>
-                    <th>Status</th>
+                    <th>Emplyoee ID</th>
+                    <th>Name</th>
+                    <th>Total Days</th>
+                    <th>Absent Days</th>
+                    <th>Presnt Days</th>
+                    <!-- <th>Action</th> -->
+                    
                 </tr>
                 <?php
-                    for($i=0;$i<10;$i++){
-                        $ID = 'Emp001';
-                        $uname = 'Kosala Gamage';
-                        $inTime = '8.30 a.m.';
-                        $outTime = '6.30 p.m.';
-                        $status = 'Full Day';
+                    for($i=0;$i<30;$i++){
+                        $ID = 'E001';
+                        $uname = 'kavi boo';
+                        $TotalDay = '4';
+                        $AbsentDay = '2';
+                        $PresentDay = '2';
+                        // $action = '';
+                        // echo '<button>cancel</button>';
+
                         echo '<tr>';
                             echo '<td>'.$ID.'</td>';
                             echo '<td>'.$uname.'</td>';
-                            echo '<td>'.$inTime.'</td>';
-                            echo '<td>'.$outTime.'</td>';
-                            echo '<td>'.$status.'</td>';
+                            echo '<td>'.$TotalDay.'</td>';
+                            echo '<td>'.$AbsentDay.'</td>';
+                            echo '<td>'.$PresentDay.'</td>';
+                            // echo '<td>'.$action.'</td>';
+                            // echo '<td>
+                            // <a href="/Interfaces/DirectorInterface/ApproveleaveMoreDetils.php"><button style="width:28%;">More Detils</button></a>
+                            // <button style="width:28%;">Approve</button>
+                            // <button style="width:22%; float:left">Reject</button></td>';
                         echo '</tr>';
                     }
                 ?>
@@ -59,10 +135,10 @@
                 theme:'grid',
                 columnStyles:{
                     0:{cellWidth:20},
-                    1:{cellWidth:70},
+                    1:{cellWidth:20},
                     2:{cellWidth:30},
-                    3:{cellWidth:30},
-                    4:{cellWidth:30}
+                    3:{cellWidth:10},
+                    4:{cellWidth:50}
                 },
                 bodyStyles: {lineColor: [1, 1, 1]},
                 styles:{minCellHeight:5}
