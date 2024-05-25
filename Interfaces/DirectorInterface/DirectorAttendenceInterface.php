@@ -19,6 +19,7 @@
         <?php include 'DashBoard.php' ?>
     </div>
     <div class="div-Main-container">
+    <a href="DirectorAttendenceInterface.php" style="text-decoration: none;"><h4 style="margin-left:30px; margin-bottom:-10px;">Attendance</h4></a>
         <div class="Div-subContainer" style=" display: block; text-align: center; ">
             <h1>Attendence Report</h1>
             <br>
@@ -31,31 +32,52 @@
                     <th>Status</th>
                 </tr>
                 <?php
-                    for($i=0;$i<10;$i++){
-                        $ID = '13/05/2024';
-                        $uname = 'Monday';
-                        $inTime = '8.30 a.m.';
-                        $outTime = '6.30 p.m.';
-                        $status = 'Full Day';
+
+
+                        include '../../DataBase/contodb.php';
+                        if (isset($_COOKIE['username'])) {
+                            $username = $_COOKIE['username'];
+                
+                        }
+                        $sql = "SELECT * FROM worktime where EmpId = 'EMP001'";
+                        $result = $conn1->query($sql);
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                        
+                        // The date you want to get the day for
+                        $date = $row['Date'];
+
+                        // Convert the date string into a timestamp
+                        $timestamp = strtotime($date);
+
+                        // Get the day of the week
+                        $dayOfWeek = date('l', $timestamp);
+
+
+                        $inTime = $row['TimeIn'];
+                        $outTime = $row['TimeOut'];
+                        $status = $row['Status'];
                         echo '<tr>';
-                            echo '<td>'.$ID.'</td>';
-                            echo '<td>'.$uname.'</td>';
+                            echo '<td>'.$date.'</td>';
+                            echo '<td>'. $dayOfWeek.'</td>';
                             echo '<td>'.$inTime.'</td>';
                             echo '<td>'.$outTime.'</td>';
                             echo '<td>'.$status.'</td>';
                         echo '</tr>';
                     }
+                }
+                    
                 ?>
             </table>
-        <button type="button" onclick="exportPdf()" class="btn btn-primary">Export To PDF</button>
+        <!-- <button type="button" onclick="exportPdf()" class="btn btn-primary">Export To PDF</button> -->
         </div>
     </div>
     <script>
          function exportPdf(){
             var pdf = new jsPDF();
-            pdf.text(12,20,"Attendence Report");
+            pdf.text(16,25,"Attendence Report");
             pdf.autoTable({html:'#table',
-                startY: 25,
+                startY: 30,
                 theme:'grid',
                 columnStyles:{
                     0:{cellWidth:20},

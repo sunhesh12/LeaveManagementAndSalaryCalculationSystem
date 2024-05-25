@@ -1,20 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Form</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hide or Show Input Field Based on Select Option</title>
+<script>
+    function toggleInput() {
+        var selectBox = document.getElementById("mySelect");
+        var inputField = document.getElementById("textInput");
+        
+        if (selectBox.value === "option1") {
+            inputField.style.display = "none";
+        } else {
+            inputField.style.display = "block";
+        }
+    }
+</script>
 </head>
 <body>
-    <h2>Contact Us</h2>
-    <form action="send_email.php" method="POST">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
-        <label for="message">Message:</label><br>
-        <textarea id="message" name="message" rows="4" required></textarea><br>
-        <button type="submit">Send</button>
-    </form>
+
+<select id="mySelect" onchange="toggleInput()">
+    <option value="option1">Option 1</option>
+    <option value="option2">Option 2</option>
+</select>
+
+<input type="text" id="textInput" style="display: none;" placeholder="Enter something">
+
 </body>
 </html>

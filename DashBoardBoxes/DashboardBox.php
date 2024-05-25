@@ -36,7 +36,7 @@
                 <h2 class="h1-number" name="Presentcount">
                     <?php 
                     include '../../DataBase/contodb.php';
-                    session_start();
+                    // session_start();
                     $sql1 = "select COUNT(*) from user;";
                     $stmt = $conn1->prepare($sql1);
                     $stmt->execute();
@@ -52,7 +52,7 @@
                     echo $Count1-$Count;
                     $stmt->close();
                     $conn1->close();
-                    session_abort();
+                    // session_abort();
                     ?>
                 </h2>
             </form>
@@ -74,7 +74,7 @@
 
             }
             include '../../DataBase/contodb.php';
-            session_start();
+            // session_start();
             
             $sql1 = "SELECT COUNT(DISTINCT date) FROM worktime WHERE EmpId = '".$username."' ;";
             $stmt = $conn1->prepare($sql1);
@@ -96,7 +96,7 @@
             
             $stmt->close();
             $conn1->close();
-            session_abort();
+            // session_abort();
             ?>
             </h2>
         </div>
@@ -112,7 +112,7 @@
                 <h2 class="h1-number" name="Absentcount">
                     <?php 
                     include '../../DataBase/contodb.php';
-                    session_start();
+                    // session_start();
                     $sql = "select COUNT(*) from absent;";
                     $stmt = $conn1->prepare($sql);
                     $stmt->execute();
@@ -121,7 +121,7 @@
                     echo $Count;
                     $stmt->close();
                     $conn1->close();
-                    session_abort();
+                    // session_abort();
                     ?>
                 </h2>
             </form>
@@ -163,7 +163,7 @@
                             echo '<td>'.$Deparment.'</td>';
                         echo '</tr>';
                     }
-                    session_abort();
+                    // session_abort();
                 ?>
             </table>
         <!-- <button type="button" onclick="exportPdf()" class="btn btn-primary">Export To PDF</button> -->

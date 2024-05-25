@@ -1,3 +1,6 @@
+<?php 
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,33 +28,86 @@
             <table  id="table">
                 <tr style=" background-color: rgb(105, 111, 255); ">
                     <th>Leave Name</th>
-                    <th>Period</th>
-                    <th>Date</th>
-                    <th>Time</th>
+                    <!-- <th>Period</th> -->
+                    <th>Start Date</th>
+                    <th>End Time</th>
                     <th>Comment</th>
                     <th>Status</th>
                     <th>Cancel</th>
                 </tr>
                 <?php
-                    for($i=0;$i<30;$i++){
-                        $ID = 'Annual Leave';
-                        $uname = 'Half Day';
-                        $inTime = '03/04/2024';
-                        $outTime = '11:26';
-                        $Comment = 'I am Feeling unwell';
-                        $status = '';
-                        // echo '<button>cancel</button>';
+                include '../../DataBase/contodb.php';
 
-                        echo '<tr>';
-                            echo '<td>'.$ID.'</td>';
-                            echo '<td>'.$uname.'</td>';
-                            echo '<td>'.$inTime.'</td>';
-                            echo '<td>'.$outTime.'</td>';
+                if (isset($_COOKIE['username'])) {
+                    $username = $_COOKIE['username'];
+                    $userId = 0;
+                    $sql1 = "SELECT UserId FROM user WHERE userName = ?";
+                    $stmt1 = $conn1->prepare($sql1);
+                    $stmt1->bind_param("s", $username);
+                    $stmt1->execute();
+                    $stmt1->bind_result($userId);
+                    $stmt1->fetch();
+                    $stmt1->close();
+
+                    // Assuming $userId is retrieved successfully, now retrieve data specific to this user
+                    $sql2 = "SELECT Reason, startDate, endDate,LeaveId, Message FROM leaveapply WHERE UserId = ?";
+                    $stmt2 = $conn1->prepare($sql2);
+                    $stmt2->bind_param("i", $userId);
+                    $stmt2->execute();
+                    $result = $stmt2->get_result();
+
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<form method="post" action="../../DataBase/deleteApproveStateDb.php" id="AdduserForm">';
+                            $Reason = $row['Reason'];
+                            $startDate = $row['startDate'];
+                            $endDate = $row['endDate'];
+                            $Comment = $row['Message'];
+                            $leaveid = $row['LeaveId'];
+                            echo '<input name="leaveid" value = "'.$leaveid.'" hidden>';
+                            
+                            $status = '<img src="images/questionMark.png" style="width:50px; margin-left:30px">';
+
+                            echo '<tr>';
+                            echo '<td>'.$Reason.'</td>';
+                            echo '<td>'.$startDate.'</td>';
+                            echo '<td>'.$endDate.'</td>';
                             echo '<td>'.$Comment.'</td>';
                             echo '<td>'.$status.'</td>';
-                            echo '<td><button style="width:80%;">cancel</button></td>';
-                        echo '</tr>';
+                            
+                            echo '<td><button type="submit" name="action" value="delete" style="width:80%;">cancel</button></td>';
+                            echo '</form>';
+                            echo '</tr>';
+                        }
+                    } else {
+                        // No rows found
+                        // echo '<tr><td colspan="6">No data found</td></tr>';
                     }
+                    $stmt2->close();
+                }
+                $conn1->close();
+            ?>
+
+                <?php
+                    // for($i=0;$i<30;$i++){
+                        // $ID = 'Annual Leave';
+                        // // $uname = 'Half Day';
+                        // $inTime = '03/04/2024';
+                        // $outTime = '03/04/2024';
+                        // $Comment = 'I am Feeling unwell';
+                        // $status = '<img src="images/questionMark.png" style="width:50px; margin-left:30px">';
+                        // echo '<button>cancel</button>';
+
+                    //     echo '<tr>';
+                    //         echo '<td>'.$ID.'</td>';
+                    //         // echo '<td>'.$uname.'</td>';
+                    //         echo '<td>'.$inTime.'</td>';
+                    //         echo '<td>'.$outTime.'</td>';
+                    //         echo '<td>'.$Comment.'</td>';
+                    //         echo '<td>'.$status.'</td>';
+                    //         echo '<td><button style="width:80%;">cancel</button></td>';
+                    //     echo '</tr>';
+                    // }
                 ?>
             </table>
         <button type="button" onclick="exportPdf()" class="btn btn-primary">Export To PDF</button>

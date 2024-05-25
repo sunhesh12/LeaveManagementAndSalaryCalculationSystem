@@ -23,7 +23,7 @@
         <?php include 'DashBoard.php' ?>
     </div>
     <div class="div-Main-container">
-        <form method="POST" action="">
+        <form method="POST" action="../../DataBase/AttendenceReporttSysAdmin.php">
     <div class="Div-subContainer" style=" display: flex; text-align: center; ">
         <div style=" width:33%; height:100px; float:left;">
         <select selected>

@@ -29,7 +29,7 @@
                     <th>Total leave</th>
                     <th>Annual</th>
                     <th>Sick</th>
-                    <th>Other</th>
+                    <th>Casual</th>
                     <th>Total Takes</th>
                 </tr>
                 <?php

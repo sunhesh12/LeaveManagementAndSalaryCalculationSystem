@@ -15,40 +15,10 @@
         <?php include 'DashBoard.php' ?>
     </div>
     <div class="div-Main-container">
-       <form method="post" action="../../DataBase/AddUserDb.php" id="AdduserForm">
-       <div class="Div-subContainer">
-            <div class="Div-leftContainer" >
-            <select name="gender" id="gender" required>
-                    <option value="volvo">-Select Reason-</option>
-                    <option value="volvo">Annual leave </option>
-                    <option value="volvo">Casual leave </option>
-                    <option value="volvo">Medical leave</option>
-                    <option value="volvo">Work from home</option>
-                </select>
-                <input type ="Date"  placeholder="Emp Number" required>
-                <input type ="Date"  placeholder="Full Name" required>
-                <!-- <input type ="text"  placeholder="First Name"  required > -->
-                <!-- <input type ="text"  placeholder="Last Name" required > -->
-                <!-- <input type ="email" placeholder="Email" required > -->
-
-                <textarea type ="text"  placeholder="Type your comments" required style="width: 78%;
-        height: 300px;
-        resize: none; 
-        Border:none;
-        border-radius: 10px; padding: 10px; margin-top: 33px; " ></textarea>
-
-            </div>
-        </div>
-        <div class="Div-btnContainer">
-            <!-- <div style="background-color: green; width: 50%; height: 4%; "> -->
-                <p>Error message here</p> <!--Error message-->
-            <!-- </div>      -->
-            <button style=" width:260px; " >Submit</button>
-            <!-- <button onclick="clearFields()" >Clear All</button> -->
-        </div>
-       </form>
+    <a href="ApplyLeave.php" style="text-decoration: none;"><h4 style="margin-left:30px; margin-bottom:-10px;">Leave>Apply Leave</h4></a>
+    <?php include '../../LeaveApplyForm/LeaveApply.php' ?>
     </div>
-
+    
     <script>
         <?php include '../../Scripts/navigationBarScript.php/navigationbarScript.php' ?>
     </script>
