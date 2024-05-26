@@ -86,7 +86,7 @@
     </div>
     </form>
         <div class="Div-subContainer" style=" display: block; text-align: center; ">
-            <h1>My Attendence Report</h1>
+            <h1>Attendence Report</h1>
             <br>
             <table  id="table">
                 <tr style=" background-color: rgb(105, 111, 255); ">
@@ -135,10 +135,10 @@
                 theme:'grid',
                 columnStyles:{
                     0:{cellWidth:20},
-                    1:{cellWidth:20},
-                    2:{cellWidth:30},
-                    3:{cellWidth:10},
-                    4:{cellWidth:50}
+                    1:{cellWidth:50},
+                    2:{cellWidth:20},
+                    3:{cellWidth:20},
+                    4:{cellWidth:20}
                 },
                 bodyStyles: {lineColor: [1, 1, 1]},
                 styles:{minCellHeight:5}

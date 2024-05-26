@@ -1,3 +1,4 @@
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,33 +20,91 @@
         <?php include 'DashBoard.php' ?>
     </div>
     <div class="div-Main-container">
-        <div class="Div-subContainer" style=" display: block; text-align: center; ">
-            <img src="../../Interfaces/SystemAdminInterface/images/nullProfileIcon.png" alt="icon" style="width:10%;height:10%;">
-            <h2>Kavindi Fernando</h2>
-            <p>Kavindi123@gmail.com</p>
+    <a href="ApproveLeave.php" style="text-decoration: none;"><h4 style="margin-left:30px; margin-bottom:-10px;">Leave>Approve Leave>More Details</h4></a>
+    
+    <div class="Main-Dashboard" style="text-align:center; width:90%; background-color: rgb(205, 215, 253);">
+            <img src="../../Interfaces/SystemAdminInterface/images/nullProfileIcon.png" alt="icon" style="width:15%;height:auto;">
+            <?php
+            include '../../DataBase/contodb.php';
+            $LeaveId1 = $_SESSION["LeaveMd"];
+            $sql = "SELECT * FROM leaveapply where leaveid = ?";
+            $stmt = $conn1->prepare($sql);
+            $stmt -> bind_param("i", $LeaveId1);
+            $stmt->execute();
+            $stmt->bind_result($LeaveId, $userId, $StartDate, $EndDate, $Message, $Reason);
+            $stmt->fetch();
+            $state ="Not Approve or Reject";
+            
+            if ($LeaveId == "") {
+                $LeaveId1 = $_SESSION["LeaveMd"];
+                // No rows found in leaveapply table, so query reject table
+                $sql = "SELECT * FROM reject where leaveid = ?";
+                $stmt = $conn1->prepare($sql);
+                $stmt -> bind_param("i", $LeaveId1);
+                $stmt->execute();
+                $stmt->bind_result($rejectid,$userId, $StartDate, $EndDate, $Message, $Reason,$LeaveId);
+                $stmt->fetch();
+                $state ="Rejected";
+                echo '<style>
+                .state{
+                    color:red;
+                }
+                </style>';
+            } 
+            
+            if ($LeaveId == "") {
+                $LeaveId1 = $_SESSION["LeaveMd"];
+                // No rows found in reject table as well, so query approve table
+                $sql = "SELECT * FROM approve where leaveid = ?";
+                $stmt = $conn1->prepare($sql);
+                $stmt -> bind_param("i", $LeaveId1);
+                $stmt->execute();
+                $stmt->bind_result($approveid,$userId, $StartDate, $EndDate, $Message, $Reason,$LeaveId);
+                $stmt->fetch();
+                $state ="Approved";
+                echo '<style>
+                .state{
+                    color:green;
+                }
+                </style>';
+
+            }
+            
+            $stmt->close();
+            
+            
+            $Email;$FullName;
+            $sql1 = "SELECT email,fullName FROM user WHERE userId = ?";
+            $stmt1 = $conn1->prepare($sql1);
+            $stmt1->bind_param("s", $userId);
+            $stmt1->execute();
+            $stmt1->bind_result($Email,$FullName);
+            $stmt1->fetch();
+            $stmt1->close();
+
+            echo'<h2>'.$FullName.'</h2>
+            <p>'.$Email.'</p>
+            <p class="state">'.$state.'</p>
             <table id="table" style="Width:60%; margin-left:20%;">
                 <tr>
                     <td>Leave Type</td>
-                    <td>Annual Leave</td>
+                    <td>'.$Reason.'</td>
                 </tr>
                 <tr>
-                    <td>Period</td>
-                    <td>Half Day</td>
+                    <td>Start Date</td>
+                    <td>'.$StartDate.'</td>
                 </tr>
                 <tr>
-                    <td>Date</td>
-                    <td>03/04/2024</td>
-                </tr>
-                <tr>
-                    <td>Time</td>
-                    <td>11:26</td>
+                    <td>End Date</td>
+                    <td>'.$EndDate.'</td>
                 </tr>
                 <tr>
                     <td>comment</td>
-                    <td>i am feeling not well</td>
+                    <td>'.$Message.'</td>
                 </tr>
             </table>
-            <a href="/Interfaces/DirectorInterface/ApproveLeave.php"><button>Back</button></a>
+            <a href="ApproveLeave.php"><button>Back</button></a>'
+            ?>
         </div>
     </div>
     <!-- <script>

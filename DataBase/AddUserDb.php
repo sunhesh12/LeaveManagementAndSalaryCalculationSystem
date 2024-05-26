@@ -4,23 +4,43 @@ include 'contodb.php';
 
 session_start();
 
-$Department = $_POST["dep-Select"];
-$Role = $_POST["Role-Select"];
-$Email = $_POST["email"];
-$EmpNumber = $_POST["empNum"];
-$FullName = $_POST["fullName"];
-$UserName = $_POST["userName"];
-$password = $_POST["Password"];
-$Position = $_POST["Position"];
-$Nic = $_POST["nic"];
 
+                    
 // echo $UserName;
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
     $action = $_POST["action"];
+    $Department = $_POST["dep-Select"];
+    $Role = $_POST["Role-Select"];
+    $Email = $_POST["email"];
+    $EmpNumber = $_POST["empNum"];
+    $FullName = $_POST["fullName"];
+    $UserName = $_POST["userName"];
+    $password = $_POST["Password"];
+    $Position = $_POST["Position"];
+    $Nic = $_POST["nic"];
+    
+     // Retrieve Department_id
+    $sql = "SELECT Department_id FROM department WHERE Department_name = ?";
+    $stmt1 = $conn1->prepare($sql);
+    $stmt1->bind_param("s", $Department);
+    $stmt1->execute();
+    $stmt1->bind_result($Department);
+    $stmt1->fetch();
+    $stmt1->close();
+    
+    // Retrieve Role_id
+    $sql = "SELECT Role_id FROM role WHERE Role_name = ?";
+    $stmt2 = $conn1->prepare($sql);
+    $stmt2->bind_param("s", $Role);
+    $stmt2->execute();
+    $stmt2->bind_result($Role);
+    $stmt2->fetch();
+    $stmt2->close();
 
     switch ($action) {
         case "add":
             if($Department !== "-Select a department-" && $Role !=="-Select a Role-" && $Email !=="" && $FullName !=="" && $Nic !=="" ){
+            
             $sql2 ="insert into user (UserId,fullName,Email,UserName,Position,nic,Department,Role,password)  values(?,?,?,?,?,?,?,?,?);";
             $stmt = $conn1->prepare($sql2);
             $stmt->bind_param("sssssssss",$EmpNumber,$FullName,$Email,$UserName,$Position,$Nic,$Department,$Role,$password );
@@ -38,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
                // echo ''   <!-- <input type="text" name="subject" required placeholder="subject"> -->
                echo ' <input type="hidden" name="_subject" value="Your Office Leave Management Account">';
                echo    '<input type="hidden" name="_captcha" value="false">';
-               echo   ' <input type="hidden" name="msg" required placeholder="message" value = "User Name :Account update Successfully!">';
+               echo   ' <input type="hidden" name="msg" required placeholder="message" value = "Hello,'.$FullName.' Your Account ,User Name:'.$EmpNumber.' and Password : '.$EmpNumber.'!">';
                echo    '<button type="submit">Click here to submit User Detils fo user via email</button>';
                echo '<input type="hidden" name="_next" value="http://localhost:3000/Interfaces/SystemAdminInterface/AddUserInterface.php">';
                echo '</form>';
@@ -50,10 +70,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             break;
         case "update":
             if($Department !== "-Select a department-" && $Role !=="-Select a Role-" && $Email !=="" && $FullName !=="" && $Nic !=="" ){
+            // Update user details in the database
             $sql2 = "UPDATE user SET fullName = ?, Email = ?, Position = ?, nic = ?, Department = ?, Role = ?, password = ? WHERE userId = ?";
-            $stmt = $conn1->prepare($sql2);
-            $stmt->bind_param("ssss", $EmpNumber);
-            $stmt->execute();
+            $stmt12 = $conn1->prepare($sql2);
+            
+            $stmt12->bind_param("ssssssss", $FullName, $Email, $Position, $Nic, $Department, $Role, $password, $EmpNumber);
+            $stmt12->execute();
             $_SESSION["fullName1"] = $FullName; 
             $_SESSION["email1"] = $Email;
 
@@ -73,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
                // echo ''   <!-- <input type="text" name="subject" required placeholder="subject"> -->
                echo ' <input type="hidden" name="_subject" value="Your Office Leave Management Account">';
                echo    '<input type="hidden" name="_captcha" value="false">';
-               echo   ' <input type="hidden" name="msg" required placeholder="message" value = "User Name :Account update Successfully!">';
+               echo   ' <input type="hidden" name="msg" required placeholder="message" value = "Account update Successfully!">';
                echo    '<button type="submit">submit User Detils to email</button>';
                echo '<input type="hidden" name="_next" value="http://localhost:3000/Interfaces/SystemAdminInterface/AddUserInterface.php">';
                echo '</form>';
@@ -149,27 +171,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             $_SESSION["Position"] = $Position;
             $_SESSION["nic"] = $Nic;
 
-            // echo '<form action="https://formsubmit.co/hsdbandaranayake@gmail.com" method="POST">';
-            //  echo'   <input type="hidden" name="name" required placeholder="name" value="'.$_SESSION["fullName"].'">';
-            // echo '<input type="hidden" name="email" required placeholder="email" value="'.$_SESSION["email"].'">';  
-            // // echo ''   <!-- <input type="text" name="subject" required placeholder="subject"> -->
-            // echo ' <input type="hidden" name="_subject" value="Your Office Leave Management Account">';
-            // echo    '<input type="hidden" name="_captcha" value="false">';
-            // echo   ' <input type="hidden" name="msg" required placeholder="message" value = "User Name :'.$_SESSION["userName"] .' and Password :'.$_SESSION["userName"] .'">';
-            // echo    '<button type="submit">submit User Detils to email</button>';
-            // echo '<input type="hidden" name="_next" value="http://localhost:3000/Interfaces/SystemAdminInterface/AddUserInterface.php">';
-            // echo '</form>';
-            // $error = "Send detils to user SuccessFully!";
-            // $success = "Account delete SuccessFully.";
-            // echo "<script>
-            //     var response = confirm('$error');
-            //     if (response == true) {
-            //         // User clicked OK, redirect to a PHP script to handle account deletion
-            //         var response = confirm('$error');
-            //         // window.location.href = 'delete_account.php?empNumber=$EmpNumber';
-
-            //     } 
-            //     </script>";
             header("Location: ../Interfaces/SystemAdminInterface/AddUserInterface.php");
             break;
         

@@ -38,7 +38,7 @@ if ($Password === $storedPassword) {
             header('Location: ../Interfaces/DirectorInterface/DirectorDashBoard.php');
             break;
         case 'ROL003':
-            header('Location: ../Interfaces/Role3Interface/SystemAdminDashboard.php');
+            header('Location: ../Interfaces/SystemAdminInterface/SystemAdminDashboard.php');
             break;
         case 'ROL004':
             header('Location: ../Interfaces/EmplyoeeInterface/EmplyoeeDashBoard.php');

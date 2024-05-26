@@ -19,36 +19,8 @@
         <?php include 'DashBoard.php' ?>
     </div>
     <div class="div-Main-container">
-        <div class="Div-subContainer" style=" display: block; text-align: center; ">
-            <h1>My Attendence Report</h1>
-            <br>
-            <table  id="table">
-                <tr style=" background-color: rgb(105, 111, 255); ">
-                    <th>Leave Type</th>
-                    <th>All Leave</th>
-                    <th>Applied Leave</th>
-                    <th>Reject Leave</th>
-                    <th>Avilable Leave</th>
-                </tr>
-                <?php
-                    for($i=0;$i<30;$i++){
-                        $ID = 'Annual Leave';
-                        $uname = '14';
-                        $inTime = '2';
-                        $outTime = '0';
-                        $status = '12';
-                        echo '<tr>';
-                            echo '<td>'.$ID.'</td>';
-                            echo '<td>'.$uname.'</td>';
-                            echo '<td>'.$inTime.'</td>';
-                            echo '<td>'.$outTime.'</td>';
-                            echo '<td>'.$status.'</td>';
-                        echo '</tr>';
-                    }
-                ?>
-            </table>
-        <button type="button" onclick="exportPdf()" class="btn btn-primary">Export To PDF</button>
-        </div>
+    <a href="ApplyLeave.php" style="text-decoration: none;"><h4 style="margin-left:30px; margin-bottom:-10px;">Leave>Apply Blance</h4></a>
+    <?php include '../../CheckLeaveBlance/leaveBlance.php'; ?>
     </div>
     <script>
          function exportPdf(){

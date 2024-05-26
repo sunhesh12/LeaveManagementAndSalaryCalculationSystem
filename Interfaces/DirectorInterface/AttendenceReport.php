@@ -78,7 +78,7 @@
                     }
                 ?>
             </table>
-        <button type="button" onclick="exportPdf()" class="btn btn-primary">Export To PDF</button>
+        <!-- <button type="button" onclick="exportPdf()" class="btn btn-primary">Export To PDF</button> -->
         </div>
     </div>
     <script>

@@ -1,6 +1,4 @@
-<?php 
-    session_start();
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,15 +17,7 @@
             <p>Select Category 
                 <select name="category" id="gender" required>
                 <?php
-                    // session_start();
-                        
-                        // if(isset($_SESSION["dep-Select"])){
-                        //     $dep = $_SESSION["dep-Select"];
-                        //     // echo $dep;
-                        //     echo '<option value="'.$dep.'">'.$dep.'</option>';
-                        //     echo '<option value="-Select a department-">-Select a department-</option>';
-                        //     unset($_SESSION["dep-Select"]);
-                        // }else{
+
                         echo '<option value="-Select a department-">-Select a Category-</option>';
                         // }
 

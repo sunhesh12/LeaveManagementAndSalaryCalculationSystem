@@ -93,7 +93,7 @@
 
                         if ($result->num_rows > 0) {
                             while($row = $result->fetch_assoc()) {
-                                echo '<option value="department">'. $row['Department_name'] .'</option>'; 
+                                echo '<option value="'.$row['Department_name'].'">'. $row['Department_name'] .'</option>'; 
                             }
                         } else {
                             echo '<option value="">No departments found</option>';
@@ -131,7 +131,7 @@
 
                             if ($result1->num_rows > 0) {
                                 while($row1 = $result1->fetch_assoc()) {
-                                    echo '<option value="role">'. $row1['Role_name'] .'</option>'; 
+                                    echo '<option value="'.$row1['Role_name'] .'">'. $row1['Role_name'] .'</option>'; 
                                 }
                             } else {
                                 echo '<option value="">No Role found</option>';

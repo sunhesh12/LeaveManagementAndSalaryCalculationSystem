@@ -39,8 +39,29 @@
                             $username = $_COOKIE['username'];
                 
                         }
-                        $sql = "SELECT * FROM worktime where EmpId = 'EMP001'";
-                        $result = $conn1->query($sql);
+                        $sql = "SELECT userId FROM user WHERE username like ?";
+                        $stmt = $conn1->prepare($sql);
+                        $stmt->bind_param("s", $username);
+                        $stmt->execute();
+                        $stmt->bind_result($EmpNumber);
+                        $stmt->fetch();
+                        $stmt->close();
+                        
+
+
+
+                        $sql = "SELECT * FROM worktime WHERE EmpId = ?";
+                        $stmt = $conn1->prepare($sql);
+
+                        // Bind parameters
+                        $stmt->bind_param("s", $EmpNumber);
+
+                        // Execute the statement
+                        $stmt->execute();
+
+                        // Get the result
+                        $result = $stmt->get_result();
+                        //////////
                         if ($result->num_rows > 0) {
                             while($row = $result->fetch_assoc()) {
                         

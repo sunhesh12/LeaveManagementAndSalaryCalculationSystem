@@ -14,7 +14,7 @@
     
     <?php include '../../DashBoardBoxes/DashboardBox.php' ?>
     </div>
-
+    
     <script>
         <?php include '../../Scripts/navigationBarScript.php/navigationbarScript.php' ?>
     </script>
