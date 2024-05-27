@@ -1,11 +1,7 @@
-<?php
-    // session_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <?php include(__DIR__ . '/../../TitleOfWebPage/title.php'); ?>
-    <Link rel="stylesheet" type="text/css" href="/styleCSS/systemAdminInterface/SearchUserStyle.php">
     <link rel="stylesheet" type="text/css" href="/styleCSS/DirectorInterface/DirectorInterfaceStyle.php">
     <link rel="stylesheet" type="text/css" href="/styleCSS/systemAdminInterface/AddUserStyle.php">
     <link rel="stylesheet" type="text/css" href="/styleCSS/systemAdminInterface/AttendenceStyle.php">
@@ -23,10 +19,10 @@
         <?php include 'DashBoard.php' ?>
     </div>
     <div class="div-Main-container">
-        <form method="POST" action="../../DataBase/AttendenceReporttSysAdmin.php">
     <div class="Div-subContainer" style=" display: flex; text-align: center; ">
-        <div style=" width:33%; height:100px; float:left;">
-        <select selected>
+    <div style=" width:33%; height:100px; float:left;">
+    <form method="post" action="">
+        <select selected name="selectYear">
             <option value="">-Year-</option>
             <?php
                 $curYear = date('Y'); 
@@ -41,24 +37,24 @@
         <div style=" width:33%; height:100px;  float:left; margin-left:10px;">
         <select name="Month"  >
             <option value="" selected>-Month-</option>
-            <option value="January">January</option>
-            <option value="February">February</option>
-            <option value="March">March</option>
-            <option value="April">April</option>
-            <option value="May">May</option>
-            <option value="June">June</option>
-            <option value="July">July</option>
-            <option value="August">August</option>
-            <option value="September">September</option>
-            <option value="October">October</option>
-            <option value="November">November</option>
-            <option value="December">December</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
 
 
         </select>
         </div>
         <div style=" width:33%; height:100px; float:left; margin-left:10px;">
-        <select >
+        <select name="department">
             <option value="volvo">-Department-</option>
             <?php 
                 // echo '<option value="-Select a department-">-Select a department-</option>';
@@ -71,7 +67,7 @@
 
                 if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
-                        echo '<option value="department">'. $row['Department_name'] .'</option>'; 
+                        echo '<option value="'.$row['Department_name'].'">'. $row['Department_name'] .'</option>'; 
                     }
                 } else {
                     echo '<option value="">No departments found</option>';
@@ -81,12 +77,11 @@
             ?>
         </select>
         </div>
-        <button >Veiw Report</button>
-    
+        <button type="submit" name="count_dates" >Veiw Report</button>
+     </form>
     </div>
-    </form>
         <div class="Div-subContainer" style=" display: block; text-align: center; ">
-            <h1>Attendence Report</h1>
+            <h1>Emplyoee Attendence Report</h1>
             <br>
             <table  id="table">
                 <tr style=" background-color: rgb(105, 111, 255); ">
@@ -99,28 +94,97 @@
                     
                 </tr>
                 <?php
-                    for($i=0;$i<30;$i++){
-                        $ID = 'E001';
-                        $uname = 'kavi boo';
-                        $TotalDay = '4';
-                        $AbsentDay = '2';
-                        $PresentDay = '2';
-                        // $action = '';
-                        // echo '<button>cancel</button>';
-
+                    include '../../DataBase/contodb.php';
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['count_dates'])) {
+                        $Department = $_POST["department"];
+                        $year = $_POST["selectYear"];
+                        $month = $_POST["Month"];
+                        echo $month;
+                        
+                        
+                        
+                        $sql = "SELECT COUNT(DISTINCT date) FROM worktime WHERE MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE());";
+                        $stmt = $conn1->prepare($sql);
+                        $stmt ->execute();
+                        $stmt->bind_result($dayTotalCount);
+                        $stmt->fetch();
+                        $stmt->close();
+    
+                        
+                        $sql = "SELECT w.empid AS empid, u.fullname AS fullName, COUNT(DISTINCT w.date) AS date_count
+                        FROM worktime w
+                        INNER JOIN user u ON w.empid = u.userid
+                        INNER JOIN department d ON u.department = d.department_id
+                        WHERE d.department_name LIKE ?
+                        or MONTH(w.date) = ? or YEAR(w.date) = ?
+                        GROUP BY w.empid, u.fullname; ";
+                        $stmt = $conn1->prepare($sql);
+                        $stmt->bind_param("sii",$Department,$month,$year );
+                        $stmt->execute();
+    
+                        // Get the result
+                        $result = $stmt->get_result();
+                        //////////
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                        
+                        // The date you want to get the day for
+                        $empid = $row['empid'];
+    
+    
+    
+                        $fullName = $row['fullName'];
+                        $date_count = $row['date_count'];
+                        $absent = $dayTotalCount-$date_count;
                         echo '<tr>';
-                            echo '<td>'.$ID.'</td>';
-                            echo '<td>'.$uname.'</td>';
-                            echo '<td>'.$TotalDay.'</td>';
-                            echo '<td>'.$AbsentDay.'</td>';
-                            echo '<td>'.$PresentDay.'</td>';
-                            // echo '<td>'.$action.'</td>';
-                            // echo '<td>
-                            // <a href="/Interfaces/DirectorInterface/ApproveleaveMoreDetils.php"><button style="width:28%;">More Detils</button></a>
-                            // <button style="width:28%;">Approve</button>
-                            // <button style="width:22%; float:left">Reject</button></td>';
+                            echo '<td>'.$empid.'</td>';
+                            echo '<td>'. $fullName.'</td>';
+                            echo '<td>'.$dayTotalCount.'</td>';
+                            echo '<td>'.$absent.'</td>';
+                            echo '<td>'.$date_count.'</td>';
                         echo '</tr>';
+                            }}
+                    }else{
+                        $sql = "SELECT COUNT(DISTINCT date) FROM worktime WHERE MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE());";
+                        $stmt = $conn1->prepare($sql);
+                        $stmt ->execute();
+                        $stmt->bind_result($dayTotalCount);
+                        $stmt->fetch();
+                        $stmt->close();
+    
+                        $sql = "SELECT  w.empid As empid ,u.fullname As fullName , COUNT(DISTINCT w.date) AS date_count
+                        FROM worktime w
+                        INNER JOIN user u ON w.empid = u.userid 
+                        WHERE MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE())
+                        GROUP BY w.empid, u.fullname;";
+                        $stmt = $conn1->prepare($sql);
+                        $stmt->execute();
+    
+                        // Get the result
+                        $result = $stmt->get_result();
+                        //////////
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                        
+                        // The date you want to get the day for
+                        $empid = $row['empid'];
+    
+    
+    
+                        $fullName = $row['fullName'];
+                        $date_count = $row['date_count'];
+                        $absent = $dayTotalCount-$date_count;
+                        echo '<tr>';
+                            echo '<td>'.$empid.'</td>';
+                            echo '<td>'. $fullName.'</td>';
+                            echo '<td>'.$dayTotalCount.'</td>';
+                            echo '<td>'.$absent.'</td>';
+                            echo '<td>'.$date_count.'</td>';
+                        echo '</tr>';
+                            }}
                     }
+
+
                 ?>
             </table>
         <button type="button" onclick="exportPdf()" class="btn btn-primary">Export To PDF</button>

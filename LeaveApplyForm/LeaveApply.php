@@ -23,7 +23,7 @@
         
     <div class="Main-Dashboard" style="text-align:center; width:90%; background-color: rgb(205, 215, 253);">
             <!-- <div class="Div-leftContainer" > -->
-            <h2>Director Leave Form</h2>
+            <h2>Leave Apply Form</h2>
             <p >Please Fill up the form below</p>
             <p style="margin-bottom:-30px; margin-left:-660px">Select your leave type</p>
                 <?php

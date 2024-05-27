@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+
 <style>
     td,th{
         text-align: center;

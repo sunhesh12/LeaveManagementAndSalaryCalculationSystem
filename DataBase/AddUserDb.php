@@ -69,39 +69,202 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             // echo "Add operation selected";
             break;
         case "update":
-            if($Department !== "-Select a department-" && $Role !=="-Select a Role-" && $Email !=="" && $FullName !=="" && $Nic !=="" ){
-            // Update user details in the database
-            $sql2 = "UPDATE user SET fullName = ?, Email = ?, Position = ?, nic = ?, Department = ?, Role = ?, password = ? WHERE userId = ?";
-            $stmt12 = $conn1->prepare($sql2);
-            
-            $stmt12->bind_param("ssssssss", $FullName, $Email, $Position, $Nic, $Department, $Role, $password, $EmpNumber);
-            $stmt12->execute();
-            $_SESSION["fullName1"] = $FullName; 
-            $_SESSION["email1"] = $Email;
 
-            $error = "Update Successfully";
-            echo "<script>
-            var response = confirm('$error');
-            if (response == true) {
-                var response = confirm('$error');           
+            if (isset($_COOKIE['username'])) {
+                $username = $_COOKIE['username'];
+                include 'contodb.php';
+                $userId=0;
+                $role=0;
+                $sql1 = "SELECT UserId,role FROM user WHERE userName = ?";
+                $stmt1 = $conn1->prepare($sql1);
+                $stmt1->bind_param("s", $username);
+                $stmt1->execute();
+                $stmt1->bind_result($userId,$role);
+                $stmt1->fetch();
+                $stmt1->close();
+                
+                if($role === 'ROL003'){
+                    if($Department !== "-Select a department-" && $Role !=="-Select a Role-" && $Role !=="ROL003" && $Email !=="" && $FullName !=="" && $Nic !=="" ){
+                        // Update user details in the database
+                        $sql2 = "UPDATE user SET fullName = ?, Email = ?, Position = ?, nic = ?, Department = ?, Role = ?, password = ? WHERE userId = ?";
+                        $stmt12 = $conn1->prepare($sql2);
+                        
+                        $stmt12->bind_param("ssssssss", $FullName, $Email, $Position, $Nic, $Department, $Role, $password, $EmpNumber);
+                        $stmt12->execute();
+                        $_SESSION["fullName1"] = $FullName; 
+                        $_SESSION["email1"] = $Email;
+            
+                        $error = "Update Successfully";
+                        echo "<script>
+                        var response = confirm('$error');
+                        
+                        </script>";
+                        echo '<form action="https://formsubmit.co/hsdbandaranayake@gmail.com" method="POST">';
+                            echo'   <input type="hidden" name="name" required placeholder="name" value="'.$_SESSION["fullName1"].'">';
+                           echo '<input type="hidden" name="email" required placeholder="email" value="'.$_SESSION["email1"].'">';  
+                           // echo ''   <!-- <input type="text" name="subject" required placeholder="subject"> -->
+                           echo ' <input type="hidden" name="_subject" value="Your Office Leave Management Account">';
+                           echo    '<input type="hidden" name="_captcha" value="false">';
+                           echo   ' <input type="hidden" name="msg" required placeholder="message" value = "Account update Successfully!">';
+                           echo    '<button type="submit">submit User Detils to email</button>';
+                           echo '<input type="hidden" name="_next" value="http://localhost:3000/Interfaces/SystemAdminInterface/AddUserInterface.php">';
+                           echo '</form>';
+                    }else{
+                        header("Location: ../Interfaces/SystemAdminInterface/AddUserInterface.php");
+                    }
+                }else if($role === 'ROL001'){
+                    $sql2 = "UPDATE user SET fullName = ?, Email = ?, Position = ?, nic = ?, Department = ?, Role = ?, password = ? WHERE userId = ?";
+                    $stmt12 = $conn1->prepare($sql2);
+                    
+                    $stmt12->bind_param("ssssssss", $FullName, $Email, $Position, $Nic, $Department, $Role, $password, $EmpNumber);
+                    $stmt12->execute();
+                    $error = "Update Successfully";
+                    $sql2 = "SELECT UserId,fullName,Email,UserName,Position,nic,Department,Role,password FROM user WHERE userName = ? or userid = ? or email = ? or Nic = ? limit 1;";
+                    $stmt = $conn1->prepare($sql2);
+                    $stmt->bind_param("ssss", $UserName,$EmpNumber,$Email,$Nic);
+                    $stmt->execute();
+                    $stmt->bind_result($EmpNumber, $FullName ,$Email, $UserName , $Position, $Nic ,$Department , $Role , $password );
+                    $stmt->fetch();
+                    $stmt->close();
+                    // $conn1->close();
+                    
+                    $sql = " Select department_name from department where department_id = ?;";
+                    $stmt = $conn1->prepare($sql);
+                    $stmt->bind_param("s",$Department);
+                    $stmt->execute();
+                    $stmt->bind_result($Department);
+                    $stmt->fetch();
+                    $stmt->close();
+        
+                    
+                    $sql = " Select role_name from role where role_id = ?;";
+                    $stmt = $conn1->prepare($sql);
+                    $stmt->bind_param("s",$Role);
+                    $stmt->execute();
+                    $stmt->bind_result($Role);
+                    $stmt->fetch();
+                    $stmt->close();
+                    $conn1->close();
+                    
+                    $_SESSION["dep-Select"] = $Department;
+                    $_SESSION["Role-Select"] = $Role;
+                    $_SESSION["email"] = $Email;
+                    $_SESSION["empNum"] = $EmpNumber;
+                    $_SESSION["fullName"] = $FullName;
+                    $_SESSION["userName"] = $UserName;
+                    $_SESSION["Password"] = $password;
+                    $_SESSION["Position"] = $Position;
+                    $_SESSION["nic"] = $Nic;
+                    echo "<script>
+                    var response = confirm('$error');
+                    
+                    window.location.href = '../Interfaces/ManagingDirector/MdProfile.php';
+                    </script>";
+                }else if($role === 'ROL002'){
+                    $sql2 = "UPDATE user SET fullName = ?, Email = ?, Position = ?, nic = ?, Department = ?, Role = ?, password = ? WHERE userId = ?";
+                    $stmt12 = $conn1->prepare($sql2);
+                    
+                    $stmt12->bind_param("ssssssss", $FullName, $Email, $Position, $Nic, $Department, $Role, $password, $EmpNumber);
+                    $stmt12->execute();
+                    $error = "Update Successfully";
+                    echo "<script>
+                    var response = confirm('$error');
+                    window.location.href = '../Interfaces/DirectorInterface/directorProfile.php';
+                    </script>";
+                    $sql2 = "SELECT UserId,fullName,Email,UserName,Position,nic,Department,Role,password FROM user WHERE userName = ? or userid = ? or email = ? or Nic = ? limit 1;";
+                    $stmt = $conn1->prepare($sql2);
+                    $stmt->bind_param("ssss", $UserName,$EmpNumber,$Email,$Nic);
+                    $stmt->execute();
+                    $stmt->bind_result($EmpNumber, $FullName ,$Email, $UserName , $Position, $Nic ,$Department , $Role , $password );
+                    $stmt->fetch();
+                    $stmt->close();
+                    // $conn1->close();
+                    
+                    $sql = " Select department_name from department where department_id = ?;";
+                    $stmt = $conn1->prepare($sql);
+                    $stmt->bind_param("s",$Department);
+                    $stmt->execute();
+                    $stmt->bind_result($Department);
+                    $stmt->fetch();
+                    $stmt->close();
+        
+                    
+                    $sql = " Select role_name from role where role_id = ?;";
+                    $stmt = $conn1->prepare($sql);
+                    $stmt->bind_param("s",$Role);
+                    $stmt->execute();
+                    $stmt->bind_result($Role);
+                    $stmt->fetch();
+                    $stmt->close();
+                    $conn1->close();
+                    
+                    $_SESSION["dep-Select"] = $Department;
+                    $_SESSION["Role-Select"] = $Role;
+                    $_SESSION["email"] = $Email;
+                    $_SESSION["empNum"] = $EmpNumber;
+                    $_SESSION["fullName"] = $FullName;
+                    $_SESSION["userName"] = $UserName;
+                    $_SESSION["Password"] = $password;
+                    $_SESSION["Position"] = $Position;
+                    $_SESSION["nic"] = $Nic;
+                }else if($role === 'ROL004'){
+                    $sql2 = "UPDATE user SET fullName = ?, Email = ?, Position = ?, nic = ?, Department = ?, Role = ?, password = ? WHERE userId = ?";
+                    $stmt12 = $conn1->prepare($sql2);
+                    
+                    $stmt12->bind_param("ssssssss", $FullName, $Email, $Position, $Nic, $Department, $Role, $password, $EmpNumber);
+                    $stmt12->execute();
+                    $error = "Update Successfully";
+                    $sql2 = "SELECT UserId,fullName,Email,UserName,Position,nic,Department,Role,password FROM user WHERE userName = ? or userid = ? or email = ? or Nic = ? limit 1;";
+                    $stmt = $conn1->prepare($sql2);
+                    $stmt->bind_param("ssss", $UserName,$EmpNumber,$Email,$Nic);
+                    $stmt->execute();
+                    $stmt->bind_result($EmpNumber, $FullName ,$Email, $UserName , $Position, $Nic ,$Department , $Role , $password );
+                    $stmt->fetch();
+                    $stmt->close();
+                    // $conn1->close();
+                    
+                    $sql = " Select department_name from department where department_id = ?;";
+                    $stmt = $conn1->prepare($sql);
+                    $stmt->bind_param("s",$Department);
+                    $stmt->execute();
+                    $stmt->bind_result($Department);
+                    $stmt->fetch();
+                    $stmt->close();
+        
+                    
+                    $sql = " Select role_name from role where role_id = ?;";
+                    $stmt = $conn1->prepare($sql);
+                    $stmt->bind_param("s",$Role);
+                    $stmt->execute();
+                    $stmt->bind_result($Role);
+                    $stmt->fetch();
+                    $stmt->close();
+                    $conn1->close();
+                    
+                    $_SESSION["dep-Select"] = $Department;
+                    $_SESSION["Role-Select"] = $Role;
+                    $_SESSION["email"] = $Email;
+                    $_SESSION["empNum"] = $EmpNumber;
+                    $_SESSION["fullName"] = $FullName;
+                    $_SESSION["userName"] = $UserName;
+                    $_SESSION["Password"] = $password;
+                    $_SESSION["Position"] = $Position;
+                    $_SESSION["nic"] = $Nic;
+                    echo "<script>
+                    var response = confirm('$error');
+                    window.location.href = '../Interfaces/EmplyoeeInterface/plyoeeProfile.php';
+                    </script>";
                 }
-                else{
-                    window.location.href = '../Interfaces/SystemAdminInterface/AddUserInterface.php';
-                }
-            </script>";
-            echo '<form action="https://formsubmit.co/hsdbandaranayake@gmail.com" method="POST">';
-                echo'   <input type="hidden" name="name" required placeholder="name" value="'.$_SESSION["fullName1"].'">';
-               echo '<input type="hidden" name="email" required placeholder="email" value="'.$_SESSION["email1"].'">';  
-               // echo ''   <!-- <input type="text" name="subject" required placeholder="subject"> -->
-               echo ' <input type="hidden" name="_subject" value="Your Office Leave Management Account">';
-               echo    '<input type="hidden" name="_captcha" value="false">';
-               echo   ' <input type="hidden" name="msg" required placeholder="message" value = "Account update Successfully!">';
-               echo    '<button type="submit">submit User Detils to email</button>';
-               echo '<input type="hidden" name="_next" value="http://localhost:3000/Interfaces/SystemAdminInterface/AddUserInterface.php">';
-               echo '</form>';
-        }else{
-            header("Location: ../Interfaces/SystemAdminInterface/AddUserInterface.php");
-        }
+            
+            
+            
+            
+            }
+
+
+
+
+
             break;
         case "delete":
             // $message = "DO You want to delete account  + empNumber";

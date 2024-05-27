@@ -53,7 +53,7 @@
                     // Assuming $userId is retrieved successfully, now retrieve data specific to this user
                     $sql2 = "SELECT Reason, startDate, endDate,LeaveId, Message FROM approve WHERE UserId = ?";
                     $stmt2 = $conn1->prepare($sql2);
-                    $stmt2->bind_param("i", $userId);
+                    $stmt2->bind_param("s", $userId);
                     $stmt2->execute();
                     $result = $stmt2->get_result();
 
@@ -106,7 +106,7 @@
                     // Assuming $userId is retrieved successfully, now retrieve data specific to this user
                     $sql2 = "SELECT Reason, startDate, endDate,LeaveId, Message FROM leaveapply WHERE UserId = ?";
                     $stmt2 = $conn1->prepare($sql2);
-                    $stmt2->bind_param("i", $userId);
+                    $stmt2->bind_param("s", $userId);
                     $stmt2->execute();
                     $result = $stmt2->get_result();
 
@@ -160,7 +160,7 @@
                     // Assuming $userId is retrieved successfully, now retrieve data specific to this user
                     $sql2 = "SELECT Reason, startDate, endDate,LeaveId, Message FROM reject WHERE UserId = ?";
                     $stmt2 = $conn1->prepare($sql2);
-                    $stmt2->bind_param("i", $userId);
+                    $stmt2->bind_param("s", $userId);
                     $stmt2->execute();
                     $result = $stmt2->get_result();
 

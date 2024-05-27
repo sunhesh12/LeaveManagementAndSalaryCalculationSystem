@@ -9,7 +9,7 @@
                 <h2 class="h1-number" name="count">
                     <?php 
                     include '../../DataBase/contodb.php';
-                    session_start();
+                    // session_start();
                     $sql = "select COUNT(*) from user;";
                     $stmt = $conn1->prepare($sql);
                     $stmt->execute();

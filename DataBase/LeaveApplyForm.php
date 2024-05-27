@@ -5,11 +5,12 @@ if (isset($_COOKIE['username'])) {
     $username = $_COOKIE['username'];
     include 'contodb.php';
     $userId=0;
-    $sql1 = "SELECT UserId FROM user WHERE userName = ?";
+    $role=0;
+    $sql1 = "SELECT UserId,role FROM user WHERE userName = ?";
     $stmt1 = $conn1->prepare($sql1);
     $stmt1->bind_param("s", $username);
     $stmt1->execute();
-    $stmt1->bind_result($userId);
+    $stmt1->bind_result($userId,$role);
     $stmt1->fetch();
     $stmt1->close();
     
@@ -26,16 +27,33 @@ if (isset($_COOKIE['username'])) {
     // echo "Current Date: " . $currentDate;
     if($Reason === 'volvo'){
         $_SESSION["error"] = 'Please Select leave type';
-        header("Location:../Interfaces/DirectorInterface/ApplyLeave.php ");
+        if($role === 'ROL002'){
+            header("Location:../Interfaces/DirectorInterface/ApplyLeave.php ");
+        }else if($role === 'ROL004'){
+            header("Location:../Interfaces/EmplyoeeInterface/EmplyoLeaveApply.php ");
+        }
+        
     }else if($startDate < $currentDate ){
         $_SESSION["error2"] = 'Please Select leave type';
-        header("Location:../Interfaces/DirectorInterface/ApplyLeave.php ");
+        if($role === 'ROL002'){
+            header("Location:../Interfaces/DirectorInterface/ApplyLeave.php ");
+        }else if($role === 'ROL004'){
+            header("Location:../Interfaces/EmplyoeeInterface/EmplyoLeaveApply.php ");
+        }
     }else if($endDate < $currentDate ){
         $_SESSION["error3"] = 'Please Select leave type';
-        // header("Location:../Interfaces/DirectorInterface/ApplyLeave.php ");
+        if($role === 'ROL002'){
+            header("Location:../Interfaces/DirectorInterface/ApplyLeave.php ");
+        }else if($role === 'ROL004'){
+            header("Location:../Interfaces/EmplyoeeInterface/EmplyoLeaveApply.php ");
+        }
     }else if( $endDate < $startDate){
         $_SESSION["error1"] = 'Please Select valid date';
-        header("Location:../Interfaces/DirectorInterface/ApplyLeave.php ");
+        if($role === 'ROL002'){
+            header("Location:../Interfaces/DirectorInterface/ApplyLeave.php ");
+        }else if($role === 'ROL004'){
+            header("Location:../Interfaces/EmplyoeeInterface/EmplyoLeaveApply.php ");
+        }
     }else{
         $sql2 = "INSERT INTO leaveapply (userId, startDate, endDate, Message, Reason) VALUES (?, ?, ?, ?, ?)";
         $stmt2 = $conn1->prepare($sql2);
@@ -51,17 +69,26 @@ if (isset($_COOKIE['username'])) {
         unset($_SESSION["error3"]);
         session_abort();
         $error = "Message send SuccessFully!";
+        // echo $role;
+        
         echo "<script>    
-        var response = confirm('$error');
-        if (response == true) {
-    
-            window.location.href = '../Interfaces/DirectorInterface/ApplyLeave.php';
-    
-        } else {
-            // User clicked Cancel or closed the dialog, redirect back to the Add User page
-            window.location.href = '../Interfaces/DirectorInterface/ApplyLeave.php';
-        }
-    </script>";
+            var response = confirm('" . $error . "');
+            if (response == true) {
+                if('" . $role . "' == 'ROL002'){
+                    window.location.href = '../Interfaces/DirectorInterface/ApplyLeave.php';
+                } else if('" . $role . "' == 'ROL004'){
+                    window.location.href = '../Interfaces/EmplyoeeInterface/EmplyoLeaveApply.php';
+                }
+            } else {
+                if('" . $role . "' == 'ROL002'){
+                    window.location.href = '../Interfaces/DirectorInterface/ApplyLeave.php';
+                } else if('" . $role . "' == 'ROL004'){
+                    window.location.href = '../Interfaces/EmplyoeeInterface/EmplyoLeaveApply.php';
+                }
+            }
+        </script>";
+        
+        
     }
 
 
@@ -70,7 +97,11 @@ if (isset($_COOKIE['username'])) {
     // Handle case where username is not set in session
     // Redirect or show an error message
     echo 'There is error please log again!';
-    header("Location: ../Interfaces/DirectorInterface/ApplyLeave.php");
+    if($role === 'ROL002'){
+        header("Location:../Interfaces/DirectorInterface/ApplyLeave.php ");
+    }else if($role === 'ROL004'){
+        header("Location:../Interfaces/EmplyoeeInterface/EmplyoLeaveApply.php ");
+    }
 }
 
 

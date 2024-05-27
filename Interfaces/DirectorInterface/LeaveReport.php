@@ -20,65 +20,179 @@
     </div>
     <div class="div-Main-container">
     <div class="Div-subContainer" style=" display: flex; text-align: center; ">
-        <div style=" width:33%; height:100px; float:left;">
-        <select required>
-            <option value="volvo">-Year-</option>
+    <div style=" width:33%; height:100px; float:left;">
+    <form method="post" action="">
+        <select selected name="selectYear">
+            <option value="">-Year-</option>
+            <?php
+                $curYear = date('Y'); 
+
+                for($i=$curYear;$i<=$curYear +10;$i++){
+                    echo '<option value ="'.$i.'">'.$i.'</option>';
+                }
+            ?>
+
         </select >
         </div> 
         <div style=" width:33%; height:100px;  float:left; margin-left:10px;">
-        <select required >
-            <option value="volvo">-Month-</option>
+        <select name="Month"  >
+            <option value="" selected>-Month-</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+
 
         </select>
         </div>
         <div style=" width:33%; height:100px; float:left; margin-left:10px;">
-        <select required>
+        <select name="department">
             <option value="volvo">-Department-</option>
+            <?php 
+                // echo '<option value="-Select a department-">-Select a department-</option>';
+                
+                include '../../DataBase/contodb.php';
+                
 
+                $sql = "SELECT Department_name FROM department WHERE Department_id LIKE 'DEP%'";
+                $result = $conn1->query($sql);
+
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo '<option value="'.$row['Department_name'].'">'. $row['Department_name'] .'</option>'; 
+                    }
+                } else {
+                    echo '<option value="">No departments found</option>';
+                }
+
+                $conn1->close();
+            ?>
         </select>
         </div>
-        <button >Veiw Report</button>
-    
+        <button type="submit" name="count_dates" >Veiw Report</button>
+     </form>
     </div>
         <div class="Div-subContainer" style=" display: block; text-align: center; ">
-            <h1>My Attendence Report</h1>
+            <h1>Emplyoees Leave Report</h1>
             <br>
             <table  id="table">
                 <tr style=" background-color: rgb(105, 111, 255); ">
                     <th>Emplyoee ID</th>
                     <th>Name</th>
-                    <th>Total Days</th>
-                    <th>Absent Days</th>
-                    <th>Presnt Days</th>
-                    <!-- <th>Action</th> -->
+                    <th>Total Leave</th>
+                    <th>Anual Leave</th>
+                    <th>Casual Leave</th>
+                    <th>Sick Leave</th>
                     
                 </tr>
                 <?php
-                    for($i=0;$i<30;$i++){
-                        $ID = 'E001';
-                        $uname = 'kavi boo';
-                        $TotalDay = '4';
-                        $AbsentDay = '2';
-                        $PresentDay = '2';
-                        // $action = '';
-                        // echo '<button>cancel</button>';
-
+                    include '../../DataBase/contodb.php';
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['count_dates'])) {
+                        $Department = $_POST["department"];
+                        $year = $_POST["selectYear"];
+                        $month = $_POST["Month"];
+                        echo $month;
+                        
+                        
+    
+                        $sql = "SELECT 
+                        u.userid as empid,
+                        u.fullname as fullName,
+                        SUM(CASE WHEN a.reason = 'Annual leave' THEN 1 ELSE 0 END) AS Annual,
+                        SUM(CASE WHEN a.reason = 'Half Day' THEN 1 ELSE 0 END) AS HalfDay,
+                        SUM(CASE WHEN a.reason = 'Medical leave' THEN 1 ELSE 0 END) AS Medical
+                    FROM approve a
+                    INNER JOIN user u ON u.userid = a.userid
+                    INNER JOIN department d ON u.department = d.department_id
+                    WHERE d.department_name LIKE ?
+                        OR MONTH(a.startdate) = ?
+                        OR YEAR(a.startdate) = ?
+                    GROUP BY u.userid, u.fullname
+                    ORDER BY u.userid;
+                    ";
+                        $stmt = $conn1->prepare($sql);
+                        $stmt->bind_param("sii",$Department,$month,$year );
+                        $stmt->execute();
+    
+                        // Get the result
+                        $result = $stmt->get_result();
+                        //////////
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                        
+                        // The date you want to get the day for
+                        // $empid = $row['empid'];
+                        $empid = $row['empid'];
+    
+    
+    
+                        $fullName = $row['fullName'];
+                        $Annual = $row['Annual'];
+                        $HalfDay = $row['HalfDay'];
+                        $Medical = $row['Medical'];
                         echo '<tr>';
-                            echo '<td>'.$ID.'</td>';
-                            echo '<td>'.$uname.'</td>';
-                            echo '<td>'.$TotalDay.'</td>';
-                            echo '<td>'.$AbsentDay.'</td>';
-                            echo '<td>'.$PresentDay.'</td>';
-                            // echo '<td>'.$action.'</td>';
-                            // echo '<td>
-                            // <a href="/Interfaces/DirectorInterface/ApproveleaveMoreDetils.php"><button style="width:28%;">More Detils</button></a>
-                            // <button style="width:28%;">Approve</button>
-                            // <button style="width:22%; float:left">Reject</button></td>';
+                            echo '<td>'.$empid.'</td>';
+                            echo '<td>'. $fullName.'</td>';
+                            echo '<td>28</td>';
+                            echo '<td>'.$Annual.'</td>';
+                            echo '<td>'.$HalfDay.'</td>';
+                            echo '<td>'.$Medical.'</td>';
                         echo '</tr>';
+                            }}
+                    }else{
+
+    
+                        $sql = "SELECT 
+                        u.userid As empid,
+                        u.fullname As fullName,
+                        SUM(CASE WHEN a.reason = 'Annual leave' THEN 1 ELSE 0 END) AS Annual,
+                        SUM(CASE WHEN a.reason = 'Casual leave' THEN 1 ELSE 0 END) AS HalfDay,
+                        SUM(CASE WHEN a.reason = 'Medical leave' THEN 1 ELSE 0 END) AS Medical
+                    FROM approve a
+                    INNER JOIN user u ON u.userid = a.userid
+                    GROUP BY u.userid, u.fullname
+                    ORDER BY u.userid;";
+                        $stmt = $conn1->prepare($sql);
+                        $stmt->execute();
+    
+                        // Get the result
+                        $result = $stmt->get_result();
+                        //////////
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                        
+                        // The date you want to get the day for
+                        $empid = $row['empid'];
+    
+    
+    
+                        $fullName = $row['fullName'];
+                        $Annual = $row['Annual'];
+                        $HalfDay = $row['HalfDay'];
+                        $Medical = $row['Medical'];
+                        echo '<tr>';
+                            echo '<td>'.$empid.'</td>';
+                            echo '<td>'. $fullName.'</td>';
+                            echo '<td>28</td>';
+                            echo '<td>'.$Annual.'</td>';
+                            echo '<td>'.$HalfDay.'</td>';
+                            echo '<td>'.$Medical.'</td>';
+                        echo '</tr>';
+                            }}
                     }
+
+
                 ?>
             </table>
-        <button type="button" onclick="exportPdf()" class="btn btn-primary">Export To PDF</button>
+        <!-- <button type="button" onclick="exportPdf()" class="btn btn-primary">Export To PDF</button> -->
         </div>
     </div>
     <script>

@@ -61,7 +61,7 @@
     </li>
     <div class="dropdown-container">
         <li><a href="/Interfaces/EmplyoeeInterface/EmplyoeeAttendence.php">My Attendance Report</a></li>
-        <li><a href="#">Calander</a></li>
+        <li><a href="../../calander/calander.php">Calander</a></li>
     </div>
     <!-- <li><a href="#">Attendance</a></li> -->
     <li class="dropdown-btn">
@@ -83,6 +83,6 @@
         <li><a href="#">Leave Report</a></li>
         <li><a href="#">Salary Report</a></li>
     </div>-->
-    <li><a href="#">Salary</a></li>
-    <li><a href="#">Profile</a></li> 
+    <li><a href="/Interfaces/EmplyoeeInterface/Salary.php">Salary</a></li>
+    <li><a href="/Interfaces/EmplyoeeInterface/plyoeeProfile.php">Profile</a></li> 
 </div>

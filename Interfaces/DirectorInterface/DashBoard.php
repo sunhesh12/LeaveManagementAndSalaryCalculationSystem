@@ -40,9 +40,10 @@
         ?>
     </h2>
     <!-- <img src="images/searchIcon1.png" style="height: 40px; width:40px; float:right; margin-left:10px;" > -->
-    <img src="images/notification1.png" style="height: 40px; width:40px; float:right; margin-left:10px;">
+    
+    <img src="images/notification1.png" style="height: 40px; width:40px; float:right; margin-left:-10px;">
 
-
+    
     </div>
 </div>
 </div>
