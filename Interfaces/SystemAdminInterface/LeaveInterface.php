@@ -198,7 +198,7 @@
     <script>
          function exportPdf(){
             var pdf = new jsPDF();
-            pdf.text(12,20,"Attendence Report");
+            pdf.text(12,20,"Leave Report");
             pdf.autoTable({html:'#table',
                 startY: 25,
                 theme:'grid',

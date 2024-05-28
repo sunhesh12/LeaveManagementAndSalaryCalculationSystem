@@ -13,7 +13,7 @@
     </div>
     <div class="Div-container">
         <div class="Div-UpperBox">
-            <form method="POST" action="../../DataBase/get_items.php">
+            <form method="POST" action="../../DataBase/get_items1.php">
             <p>Select Category 
                 <select name="category" id="gender" required>
                 <?php
@@ -90,9 +90,14 @@
                 <input name="moredetils" value="'.$_SESSION["empNum"].'" hidden>
                 <input name="moredetils" value="'.$_SESSION["empNum"].'" hidden>
             <a href="/Interfaces/FinanceDepartment/MoreDetils.php"><button>More Detils</button></a>
-            </form>
-            
-            <a href="/Interfaces/SystemAdminInterface/AddUserInterface.php"><button>Calculate Salary</button></a>'
+            </form>';
+        
+
+        echo'<form method="POST" action="/Interfaces/FinanceDepartment/AddSalary1.php">
+        <input name="moredetils" value="'.$_SESSION["empNum"].'" hidden>
+        <input name="moredetils" value="'.$_SESSION["empNum"].'" hidden>
+    <a href="/Interfaces/FinanceDepartment/AddSalary1.php"><button>Calculate Salary</button></a>
+    </form>'
             
             ?>
             

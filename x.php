@@ -1,7 +1,53 @@
 <?php
-
 session_start();
+
+if (isset($_COOKIE['username'])) {
+    $username = $_COOKIE['username'];
+}
+
+include 'DataBase/contodb.php';
+
+$username ='usr0002';
+
+$sql = "select fullName, userid from user where username like '".$username."';";
+$stmt = $conn1->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($Count, $id);
+$stmt->fetch();
+$stmt->close();
+
+$id="usr0002";
+$sql = "SELECT * FROM financedetils WHERE userid = ? LIMIT 1";
+$stmt = $conn1->prepare($sql);
+$stmt->bind_param("s", $id); 
+$stmt->execute();
+$stmt->bind_result($Count, $id, $tax, $epf, $etf, $basicsalary, $ta, $ma);
+$stmt->fetch();
+$stmt->close();
+
+$sql = "SELECT 
+            sum(
+            HOUR(
+            TIMEDIFF(
+                CASE WHEN timeout < '17:00:00' THEN '17:00:00' ELSE timeout END, 
+        '17:00:00')
+            )) AS working_hours
+        FROM 
+            worktime
+        WHERE 
+            timein <= '17:00:00' and empid=?;";
+$stmt = $conn1->prepare($sql);
+$stmt->bind_param("s",$Count);
+$stmt->execute();
+$stmt->bind_result($house);
+$stmt->fetch();
+$stmt->close();
+
+$value = $house * 200;
+
+$conn1->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +58,7 @@ session_start();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
     <style>
-        body {
+         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -54,71 +100,10 @@ session_start();
 </head>
 <body>
 
-<?php
-// Include database connection
-
-
-if (isset($_COOKIE['username'])) {
-    $username = $_COOKIE['username'];
-}
-include 'DataBase/contodb.php';
-// $username ='EMP001';
-// include '../../DataBase/contodb.php';
-
-$sql = "select fullName,userid from user where username like '".$username."';";
-$stmt = $conn1->prepare($sql);
-$stmt->execute();
-$stmt->bind_result($Count,$id);
-$stmt->fetch();
-// echo $Count;
-$stmt->close();
-// $conn1->close();
-session_abort();
-// Fetch data from the database
-$sql = "SELECT * FROM financedetils WHERE userid = ? LIMIT 1";
-$stmt = $conn1->prepare($sql);
-$stmt->bind_param("s", $id); // Assuming $userid is the user ID
-// $userid = $_COOKIE['username']; // Get the user ID from the cookie
-$stmt->execute();
-$stmt->bind_result($Count,$id,$tax,$epf,$etf,$basicsalary,$ta,$ma);
-$stmt->fetch();
-
-// Assign variables from the fetched row
-// $basicsalary = $row['BasicSalary'];
-// $value = $row['Value']; // Assuming this is the overtime pay
-// $epf = $row['Epf'];
-// $etf = $row['Etf'];
-// $tax = $row['Tax'];
-$sql = "SELECT 
-                            sum(
-                            HOUR(
-                            TIMEDIFF(
-                                CASE WHEN timeout < '17:00:00' THEN '17:00:00' ELSE timeout END, 
-                        '17:00:00')
-                            )) AS working_hours
-                        FROM 
-                            worktime
-                        WHERE 
-                            timein <= '17:00:00' and empid=?;";
-                            $stmt = $conn1->prepare($sql);
-                            $stmt->bind_param("s",$Count);
-                            $stmt->execute();
-                            // $error = "Data updated Successfully";
-
-                            // $sql2 = "UPDATE financedetils SET Tax = ?, Epf = ?, Etf = ?, BasicSalary = ?, TravalAllownace = ?, MedicalAllawance = ? WHERE UserId = ?";
-                            // $stmt = $conn1->prepare($sql2);
-                            $stmt->bind_param("s", $house);
-                            $stmt->execute();
-                            $value = $house * 200;
-
-$stmt->close();
-$conn1->close();
-
-echo'
 <div class="container">
     <div class="header">
         <h2>Employee Salary Report</h2>
-        <h3>'.$Count.'</h3>
+        <h3><?php echo $Count; ?></h3>
     </div>
     
     <table class="report">
@@ -128,11 +113,11 @@ echo'
         </tr>
         <tr>
             <td>Basic Salary</td>
-            <td><?php echo Rs'.$basicsalary.'.00; ?></td>
+            <td><?php echo 'Rs'.$basicsalary.'.00'; ?></td>
         </tr>
         <tr>
             <td>Over Time Pay</td>
-            <td><?php echo Rs'.$value.'.00; ?></td>
+            <td><?php echo 'Rs'.$value.'.00'; ?></td>
         </tr>
         <!-- Add more earning items here -->
     </table>
@@ -144,27 +129,26 @@ echo'
         </tr>
         <tr>
             <td>EPF Contribution</td>
-            <td><?php echo Rs'.$epf.'.00; ?></td>
+            <td><?php echo 'Rs '.$epf.'.00'; ?></td>
         </tr>
         <tr>
             <td>ETF Contribution</td>
-            <td><?php echo Rs'.$etf.'.00; ?></td>
+            <td><?php echo 'Rs'.$etf.'.00'; ?></td>
         </tr>
         <!-- Add more deduction items here -->
     </table>
     
     <div class="summary">
-        <h3>Gross Salary: <?php echo Rs'.($basicsalary+$value).'0; ?></h3>
-        <h3>Total Deductions: <?php echo Rs'.($epf+$etf+$tax).'0; ?></h3>
-        <h3>Net Salary: <?php echo Rs'.($basicsalary+$value-($epf+$etf+$tax)).'0; ?></h3>
+        <h3>Gross Salary: <?php echo 'Rs'.($basicsalary+$value).'0'; ?></h3>
+        <h3>Total Deductions: <?php echo 'Rs'.($epf+$etf+$tax).'0'; ?></h3>
+        <h3>Net Salary: <?php echo 'Rs'.($basicsalary+$value-($epf+$etf+$tax)).'0'; ?></h3>
     </div>
     
     <div class="button-container">
         <button class="pdf-button" onclick="exportPdf()">Export To PDF</button>
     </div>
-</div>'
-// }
-?>
+</div>
+
 <script>
     function exportPdf() {
         var pdf = new jsPDF();

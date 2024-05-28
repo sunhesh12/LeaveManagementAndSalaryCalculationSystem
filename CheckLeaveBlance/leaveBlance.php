@@ -76,7 +76,7 @@
                         echo '<td>'.$availabale.'</td>';
                     echo '</tr>';
 
-                    $sql2 = "SELECT COUNT(*) FROM approve WHERE UserId = ? AND Reason = 'casual leave'";
+                    $sql2 = "SELECT COUNT(*) FROM approve WHERE UserId = ? AND Reason = 'Casual leave'";
                     $stmt2 = $conn1->prepare($sql2);
                     $stmt2->bind_param("s", $userId);
                     $stmt2->execute();
@@ -84,7 +84,7 @@
                     $stmt2->fetch();
                     $stmt2->close();
 
-                    $sql2 = "SELECT COUNT(*) FROM leaveapply WHERE UserId = ? AND Reason = 'casual leave'";
+                    $sql2 = "SELECT COUNT(*) FROM leaveapply WHERE UserId = ? AND Reason = 'Casual leave'";
                     $stmt2 = $conn1->prepare($sql2);
                     $stmt2->bind_param("s", $userId);
                     $stmt2->execute();
@@ -106,7 +106,7 @@
                     echo '<td>'.$availabale.'</td>';
                 echo '</tr>';
 
-                $sql2 = "SELECT COUNT(*) FROM approve WHERE UserId = ? AND Reason = 'medical leave'";
+                $sql2 = "SELECT COUNT(*) FROM approve WHERE UserId = ? AND  Reason = 'Medical leave';";
                 $stmt2 = $conn1->prepare($sql2);
                 $stmt2->bind_param("s", $userId);
                 $stmt2->execute();
@@ -114,7 +114,7 @@
                 $stmt2->fetch();
                 $stmt2->close();
 
-                $sql2 = "SELECT COUNT(*) FROM leaveapply WHERE UserId = ? AND Reason = 'mdeical leave'";
+                $sql2 = "SELECT COUNT(*) FROM leaveapply WHERE UserId = ? AND Reason = 'Medical leave'";
                 $stmt2 = $conn1->prepare($sql2);
                 $stmt2->bind_param("s", $userId);
                 $stmt2->execute();
@@ -136,7 +136,7 @@
                 echo '<td>'.$availabale.'</td>';
             echo '</tr>';
 
-            $sql2 = "SELECT COUNT(*) FROM approve WHERE UserId = ? AND Reason = 'work from home'";
+            $sql2 = "SELECT COUNT(*) FROM approve WHERE UserId = ? AND Reason = 'Work from home'";
             $stmt2 = $conn1->prepare($sql2);
             $stmt2->bind_param("s", $userId);
             $stmt2->execute();
@@ -144,7 +144,7 @@
             $stmt2->fetch();
             $stmt2->close();
 
-            $sql2 = "SELECT COUNT(*) FROM leaveapply WHERE UserId = ? AND Reason = 'work from home'";
+            $sql2 = "SELECT COUNT(*) FROM leaveapply WHERE UserId = ? AND Reason = 'Work from home'";
             $stmt2 = $conn1->prepare($sql2);
             $stmt2->bind_param("s", $userId);
             $stmt2->execute();
