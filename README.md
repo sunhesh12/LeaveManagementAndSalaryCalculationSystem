@@ -35,13 +35,13 @@ This project is a comprehensive system designed to streamline the processes of l
 Here are some screenshots of the Leave Management and Salary Calculation System:
 
 ### Login Page
-![Login Page](screenshots/login.png)
+![Login Page](SSOfImage/Login.png)
 
 ### Employee Dashboard
-![Employee Dashboard](screenshots/employee_dashboard.png)
+![Employee Dashboard](SSOfImage/DashBoard.png)
 
 ### Leave Request Form
-![Leave Request Form](screenshots/leave_request.png)
+![Leave Request Form](SSOfImage/LeaveRequestForm.png)
 
 ## 💻 Technologies Used
 
