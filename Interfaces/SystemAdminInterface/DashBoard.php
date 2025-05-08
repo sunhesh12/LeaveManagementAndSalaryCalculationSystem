@@ -51,7 +51,7 @@
 </div>
 </div>
 <div class="sidebar-toggle">
-<button id="toggleNav"><i class="fa fa-bars"></i></button>
+    <button id="toggleNav"><i class="fa fa-bars"></i></button>
 </div>
 <div class="div-main" >
 <div class="div-nav">
